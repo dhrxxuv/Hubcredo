@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { useAuth } from '@/contexts/AuthContext';
@@ -36,10 +36,16 @@ const Signup: React.FC = () => {
   const [errors, setErrors] = useState<{ email?: string; password?: string; confirmPassword?: string }>({});
   const [isLoading, setIsLoading] = useState(false);
   
-  const { signUp } = useAuth();
+  const { signUp,user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
-
+  useEffect(()=>{
+    
+    if(user){
+      navigate('/dashboard')
+    }
+  },[user,navigate])
+  
   const validateForm = () => {
     try {
       signupSchema.parse({ email, password, confirmPassword });
